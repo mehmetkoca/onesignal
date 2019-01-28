@@ -12,7 +12,7 @@ public struct OneSignalNotification: Codable {
     enum CodingKeys: String, CodingKey {
         case users
         case deviceTokens
-        
+        case externalUserIds = "include_external_user_ids"
         case title
         case subtitle
         case message
@@ -45,6 +45,9 @@ public struct OneSignalNotification: Codable {
      Example: `ce777617da7f548fe7a9ab6febb56cf39fba6d38203...`
      */
     public var deviceTokens: [String]?
+    
+    // external user id's
+    public var externalUserIds: [String]?
     
     /**
      The notification's title, a map of language codes to text for each language. Each hash must have a language
@@ -136,7 +139,6 @@ public struct OneSignalNotification: Codable {
      */
     public var isContentMutable: Bool?
     
-    
     public init(message: String) {
         self.message = OneSignalMessage(message)
         self.users = []
@@ -151,13 +153,17 @@ public struct OneSignalNotification: Codable {
         self.message = OneSignalMessage(message)
         self.users = users
     }
+    public init(message: String, externalUserIds: [String]) {
+        self.message = OneSignalMessage(message)
+        self.externalUserIds = externalUserIds
+    }
     
     public init(message: OneSignalMessage, users: [String]) {
         self.message = message
         self.users = users
     }
     
-    public init(title: String?, subtitle: String?, body: String, users: [String], deviceTokens: [String]? = nil, sound: String? = nil, category: String? = nil, sendAfter: String? = nil, additionalData: [String : String]? = nil, attachments: [String : String]? = nil) {
+    public init(title: String?, subtitle: String?, body: String, users: [String], deviceTokens: [String]? = nil, externalUserIds: [String]? = nil, sound: String? = nil, category: String? = nil, sendAfter: String? = nil, additionalData: [String : String]? = nil, attachments: [String : String]? = nil) {
         if let title = title { self.title = OneSignalMessage(title) }
         if let subtitle = subtitle { self.subtitle = OneSignalMessage(subtitle) }
         self.message = OneSignalMessage(body)
@@ -219,6 +225,7 @@ extension OneSignalNotification {
             appId: app.appId,
             playerIds: self.users,
             iosDeviceTokens: self.deviceTokens,
+            externalUserIds: self.externalUserIds,
             contents: self.message.messages,
             headings: self.title?.messages,
             subtitle: self.subtitle?.messages,
