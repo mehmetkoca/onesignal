@@ -153,9 +153,16 @@ public struct OneSignalNotification: Codable {
         self.message = OneSignalMessage(message)
         self.users = users
     }
+    
     public init(message: String, externalUserIds: [String]) {
         self.message = OneSignalMessage(message)
         self.externalUserIds = externalUserIds
+    }
+    
+    public init(message: String, externalUserIds: [String], additionalData: [String : String]?) {
+        self.message = OneSignalMessage(message)
+        self.externalUserIds = externalUserIds
+        self.additionalData = additionalData
     }
     
     public init(message: OneSignalMessage, users: [String]) {
