@@ -159,7 +159,7 @@ public struct OneSignalNotification: Codable {
         self.externalUserIds = externalUserIds
     }
     
-    public init(message: String, externalUserIds: [String], additionalData: [String : String]?) {
+    public init(message: String, externalUserIds: [String], additionalData: [String : String]) {
         self.message = OneSignalMessage(message)
         self.externalUserIds = externalUserIds
         self.additionalData = additionalData
